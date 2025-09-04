@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://uuasaaqioo20"]
+
+[ext_resource type="Script" uid="uid://q5ev2xdcfvxl" path="res://addons/GreenHeatGD/example/control.gd" id="1_sk38g"]
+[ext_resource type="Script" uid="uid://d2o2x3bq5opf1" path="res://addons/GreenHeatGD/GreenHeat.gd" id="1_y41g5"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sk38g")
+
+[node name="GreenHeat" type="Node" parent="."]
+script = ExtResource("1_y41g5")
+metadata/_custom_type_script = "uid://d2o2x3bq5opf1"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1.82897e-06, 0.757558, 0.308025, 1)
+
+[connection signal="drag_received" from="GreenHeat" to="." method="_on_green_heat_drag_received"]
