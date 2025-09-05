@@ -14,12 +14,16 @@ script = ExtResource("1_sk38g")
 
 [node name="GreenHeat" type="Node" parent="."]
 script = ExtResource("1_y41g5")
+channel_name = "cr4zyk1tty"
 metadata/_custom_type_script = "uid://d2o2x3bq5opf1"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(1.82897e-06, 0.757558, 0.308025, 1)
+color = Color(0.76, 0.76, 0.76, 1)
 
+[connection signal="click_received" from="GreenHeat" to="." method="_on_green_heat_click_received"]
 [connection signal="drag_received" from="GreenHeat" to="." method="_on_green_heat_drag_received"]
+[connection signal="drag_release_received" from="GreenHeat" to="." method="_on_green_heat_drag_release_received"]
+[connection signal="hover_received" from="GreenHeat" to="." method="_on_green_heat_hover_received"]
