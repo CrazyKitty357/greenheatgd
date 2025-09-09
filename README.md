@@ -2,7 +2,8 @@
 
 A Godot addon of an advanced clickmap for twitch
 
-[GreenHeat](https://heat.prod.kr) is an advanced clickmap for the twitch platform, it has support for clicks, drag clicks, alt clicks, and more!
+[GreenHeat](https://heat.prod.kr) is an advanced clickmap for the twitch platform, it has support for clicks, drag clicks, alt clicks, and more!  
+Go check out [prod](https://twitch.tv/prodzpod) they make a lot of cool projects including greenheat!  
 
 # How to use
 0. Download the addons directory of this repo.
