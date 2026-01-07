@@ -6,7 +6,7 @@ class_name GreenHeat
 signal click_received(packet: Dictionary) ## An exposed signal for detecting clicks.
 signal hover_received(packet: Dictionary) ## An exposed signal for detecting hovers.
 signal drag_received(packet: Dictionary) ## An exposed signal for detecting when someone is dragging.
-signal drag_release_received(packet: Dictionary) ## An exposed signal for detecting when someone is done dragging.
+signal release_received(packet: Dictionary) ## An exposed signal for detecting when someone releases a click or a drag.
 
 @export var detecting = true ## This enables / disables the clickmap on the fly.
 @export var channel_name = "" ## This is the channel name that GreenHeat is checking.
@@ -33,10 +33,10 @@ func _process(delta: float) -> void:
 			if debug:
 				print(packet)
 			if packet["type"] == "click":
-				emit_signal("click_received", packet)
+				click_received.emit(packet)
 			if packet["type"] == "hover":
-				emit_signal("hover_received", packet)
+				hover_received.emit(packet)
 			if packet["type"] == "drag":
-				emit_signal("drag_received", packet)
+				drag_received.emit(packet)
 			if packet["type"] == "release":
-				emit_signal("drag_release_received", packet)
+				release_received.emit(packet)
