@@ -27,16 +27,14 @@ func _process(delta: float) -> void:
 	while _ws.get_available_packet_count() > 0:
 		var raw = _ws.get_packet().get_string_from_utf8()
 		var packet = JSON.parse_string(raw)
-		if packet == null:
-			pass
-		else:
-			if debug:
-				print(packet)
-			if packet["type"] == "click":
+		if packet == null: continue
+		if debug: print(packet)
+		match packet["type"]:
+			"click":
 				click_received.emit(packet)
-			if packet["type"] == "hover":
+			"hover":
 				hover_received.emit(packet)
-			if packet["type"] == "drag":
+			"drag":
 				drag_received.emit(packet)
-			if packet["type"] == "release":
+			"release":
 				release_received.emit(packet)
