@@ -3,10 +3,23 @@ class_name GreenHeat
 
 ## An advanced clickmap for twitch
 
-signal click_received(packet: Dictionary) ## An exposed signal for detecting clicks.
-signal hover_received(packet: Dictionary) ## An exposed signal for detecting hovers.
-signal drag_received(packet: Dictionary) ## An exposed signal for detecting when someone is dragging.
-signal release_received(packet: Dictionary) ## An exposed signal for detecting when someone releases a click or a drag.
+## An exposed signal for detecting clicks.
+signal click_received(packet: Dictionary)
+
+## An exposed signal for detecting hovers.
+signal hover_received(packet: Dictionary)
+
+## An exposed signal for detecting when someone is dragging.
+signal drag_received(packet: Dictionary)
+
+## An exposed signal for detecting when someone releases a click or a drag.
+signal release_received(packet: Dictionary)
+
+## @deprecated: Use the release_received signal instead, this is staying for now because of compatibility with older projects.
+## An exposed signal for detecting when someone releases a click or a drag.
+signal drag_release_received(packet: Dictionary)
+
+
 
 @export var detecting = true ## This enables / disables the clickmap on the fly.
 @export var channel_name = "" ## This is the channel name that GreenHeat is checking.
@@ -37,3 +50,4 @@ func _process(delta: float) -> void:
 				drag_received.emit(packet)
 			"release":
 				release_received.emit(packet)
+				drag_release_received.emit(packet)

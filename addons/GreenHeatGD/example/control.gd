@@ -23,7 +23,7 @@ func _on_green_heat_drag_received(packet: Dictionary) -> void:
 	$ColorRect.global_position = pixel_pos
 
 
-func _on_green_heat_drag_release_received(packet: Dictionary) -> void:
+func _on_green_heat_release_received(packet: Dictionary) -> void:
 	var click_pos = Vector2(packet["x"], packet["y"])
 	var pixel_pos = float_to_screen(click_pos)
 	$ColorRect.color = "#c20041"

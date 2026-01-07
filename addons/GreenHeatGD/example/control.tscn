@@ -24,5 +24,5 @@ color = Color(0.76, 0.76, 0.76, 1)
 
 [connection signal="click_received" from="GreenHeat" to="." method="_on_green_heat_click_received"]
 [connection signal="drag_received" from="GreenHeat" to="." method="_on_green_heat_drag_received"]
-[connection signal="drag_release_received" from="GreenHeat" to="." method="_on_green_heat_drag_release_received"]
 [connection signal="hover_received" from="GreenHeat" to="." method="_on_green_heat_hover_received"]
+[connection signal="release_received" from="GreenHeat" to="." method="_on_green_heat_release_received"]
