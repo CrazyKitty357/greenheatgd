@@ -19,10 +19,9 @@ func _ready() -> void:
 	_ws.connect_to_url("wss://heat.prod.kr/%s" % channel_name)
 
 func _process(delta: float) -> void:
-	if detecting:
-		_ws.poll()
-	else:
+	if not detecting:
 		return
+	_ws.poll()
 
 	while _ws.get_available_packet_count() > 0:
 		var raw = _ws.get_packet().get_string_from_utf8()
