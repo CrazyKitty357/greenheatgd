@@ -16,6 +16,21 @@ script = ExtResource("1_sk38g")
 script = ExtResource("1_y41g5")
 metadata/_custom_type_script = "uid://d2o2x3bq5opf1"
 
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -157.0
+offset_bottom = 31.0
+grow_horizontal = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "signals"
+popup/item_0/id = 0
+popup/item_1/text = "input emulation"
+popup/item_1/id = 1
+
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
 offset_right = 40.0
@@ -26,3 +41,4 @@ color = Color(0.76, 0.76, 0.76, 1)
 [connection signal="drag_received" from="GreenHeat" to="." method="_on_green_heat_drag_received"]
 [connection signal="hover_received" from="GreenHeat" to="." method="_on_green_heat_hover_received"]
 [connection signal="release_received" from="GreenHeat" to="." method="_on_green_heat_release_received"]
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

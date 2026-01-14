@@ -137,7 +137,13 @@ func _create_mouse_button(packet : Dictionary) -> InputEventMouseButton:
 
 ## Will check if the [InputEvent] was created by GreenHeat
 static func is_input_heat(event: InputEvent) -> bool:
-	return true if event.get_meta("id") else false
+	if event.has_meta("id"):
+		return true
+	else:
+		return false
+	
+	# this worked on my machinetm but printed 3 bajillion errors to debugger - crazykitty
+	# return true if event.get_meta("id") else false
 
 ## Will check if the [InputEvent] is sourced from a "click" GreenHeat packet. Return null if the event isn't from GreenHeat
 static func is_input_click(event: InputEvent) -> bool:
