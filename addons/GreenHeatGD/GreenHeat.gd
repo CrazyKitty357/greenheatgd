@@ -1,3 +1,4 @@
+@tool
 extends Node
 class_name GreenHeat
 
@@ -23,6 +24,7 @@ signal drag_release_received(packet: Dictionary)
 
 
 @export var detecting : bool = true ## This enables / disables the clickmap on the fly.
+## @experimental: This feature is very buggy when working with multiple windows or subviewports.
 ## This enables / disables the emulations of click and drag in the game's viewport. [br]
 ## You can listen to any [InputEvent] including GreenHeat's ones using the [method Node._input] callback in any script. [br]
 ## Properties that can't be stored in the [InputEvent] like "time", "latency" and "type" can be found in the metadata of the Event.
@@ -36,8 +38,20 @@ signal drag_release_received(packet: Dictionary)
 ##	if GreenHeat.is_input_heat(event):
 ##		print(event) # do something with the GreenHeat inputs
 ## [/codeblock]
-@export var simulating_input : bool = false
+## [color=yellow]Notice[/color][br]
+## -- When using subwindows, if they are embedded, the users will be able to move and interact with the window. If they are not embedded, this feature will just not work anymore, you need to set the subwindow [member Window.transient] & [member Window.transient_to_focused] to true for the simulated click to work (only on the root window)
+## [br]
+## -- [SubViewport]s will not receive any input
+@export var simulating_input : bool = false:
+	set(value):
+		simulating_input = value
+		notify_property_list_changed()
+
 @export var channel_name : String = "" ## This is the channel name that GreenHeat is checking.
+
+## By default, the inputs will be mapped to the size of the root window. If you want the inputs to be restricted to a part of the window, set this variable.[br]
+## You can change the position of the wanted region and its size.
+@export var mapping_override: Rect2 
 
 var debug = false ## This will flood your console with verbose information regarding the websocket connection.
 
@@ -46,10 +60,15 @@ var lastCursorPositionMemory : Dictionary[String, Vector2] = {} ## Dictionary st
 var _ws := WebSocketPeer.new()
 
 func _ready() -> void:
-	_ws.connect_to_url("wss://heat.prod.kr/%s" % channel_name)
+	if not Engine.is_editor_hint():
+		_ws.connect_to_url("wss://heat.prod.kr/%s" % channel_name)
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "mapping_override" and not simulating_input:
+		property.usage |= PROPERTY_USAGE_READ_ONLY
 
 func _process(delta: float) -> void:
-	if not detecting: return
+	if not detecting or Engine.is_editor_hint(): return
 	_ws.poll()
 
 	while _ws.get_available_packet_count() > 0:
@@ -97,7 +116,9 @@ func _create_release_event(packet: Dictionary) -> void:
 	Input.parse_input_event(newInput)
 
 func _get_position_from_event(packet: Dictionary) -> Vector2:
-	return Vector2(float(packet["x"]), float(packet["y"])) * get_viewport().get_visible_rect().size
+	if mapping_override:
+		return (Vector2(float(packet["x"]), float(packet["y"])) * mapping_override.size) + mapping_override.position
+	return Vector2(float(packet["x"]), float(packet["y"])) * get_tree().root.get_visible_rect().size
 
 func _add_base_variables(event : InputEventMouse, packet : Dictionary) -> void:
 	event.set_meta("id", packet["id"])
