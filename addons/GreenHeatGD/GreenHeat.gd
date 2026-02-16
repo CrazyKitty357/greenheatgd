@@ -104,7 +104,7 @@ func _create_hover_event(packet: Dictionary) -> void:
 	Input.parse_input_event(newInput)
 
 func _create_drag_event(packet: Dictionary) -> void:
-	var newInput : InputEventMouseMotion = _create_mouse_motion(packet)
+	var newInput : InputEventMouseMotion = _create_mouse_drag(packet)
 	newInput.pressure = 1.0
 	newInput.set_meta("type", "drag")
 	Input.parse_input_event(newInput)
@@ -141,16 +141,30 @@ func _create_mouse_motion(packet : Dictionary) -> InputEventMouseMotion:
 	lastCursorPositionMemory.set(packet["id"], position)
 	return newInput
 
+func _create_mouse_drag(packet: Dictionary) -> InputEventMouseMotion:
+	var newInput : InputEventMouseMotion = _create_mouse_motion(packet)
+	match packet["button"]:
+		"left":
+			newInput.button_mask = MOUSE_BUTTON_MASK_LEFT
+		"right":
+			newInput.button_mask = MOUSE_BUTTON_MASK_RIGHT
+		"middle":
+			newInput.button_mask = MOUSE_BUTTON_MASK_MIDDLE
+	return newInput
+
 func _create_mouse_button(packet : Dictionary) -> InputEventMouseButton:
 	var newInput : InputEventMouseButton = InputEventMouseButton.new()
 	_add_base_variables(newInput, packet)
 	match packet["button"]:
 		"left":
 			newInput.button_index = 1
+			newInput.button_mask = MOUSE_BUTTON_MASK_LEFT
 		"right":
 			newInput.button_index = 2
+			newInput.button_mask = MOUSE_BUTTON_MASK_RIGHT
 		"middle":
 			newInput.button_index = 3
+			newInput.button_mask = MOUSE_BUTTON_MASK_MIDDLE
 	var position : Vector2 = _get_position_from_event(packet)
 	newInput.position = position
 	lastCursorPositionMemory.set(packet["id"], position)
