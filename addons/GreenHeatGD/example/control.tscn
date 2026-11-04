@@ -14,6 +14,7 @@ script = ExtResource("1_sk38g")
 
 [node name="GreenHeat" type="Node" parent="."]
 script = ExtResource("1_y41g5")
+channel_name = "cr4zyk1tty"
 metadata/_custom_type_script = "uid://d2o2x3bq5opf1"
 
 [node name="OptionButton" type="OptionButton" parent="."]
@@ -37,8 +38,22 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.76, 0.76, 0.76, 1)
 
+[node name="ResetConnectionButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "reset websocket connection"
+
 [connection signal="click_received" from="GreenHeat" to="." method="_on_green_heat_click_received"]
 [connection signal="drag_received" from="GreenHeat" to="." method="_on_green_heat_drag_received"]
 [connection signal="hover_received" from="GreenHeat" to="." method="_on_green_heat_hover_received"]
 [connection signal="release_received" from="GreenHeat" to="." method="_on_green_heat_release_received"]
 [connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="ResetConnectionButton" to="." method="_on_reset_connection_button_pressed"]

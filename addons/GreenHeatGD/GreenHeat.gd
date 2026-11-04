@@ -17,7 +17,7 @@ signal drag_received(packet: Dictionary)
 ## An exposed signal for detecting when someone releases a click or a drag.
 signal release_received(packet: Dictionary)
 
-## @deprecated: Use the [signal release_received] signal instead, this is staying for now because of compatibility with older projects.
+## @deprecated: Use the [signal release_received] signal instead, this is staying because of compatibility with older projects.
 ## An exposed signal for detecting when someone releases a click or a drag.
 signal drag_release_received(packet: Dictionary)
 
@@ -53,15 +53,23 @@ signal drag_release_received(packet: Dictionary)
 ## You can change the position of the wanted region and its size.
 @export var mapping_override: Rect2 
 
-var debug = false ## This will flood your console with verbose information regarding the websocket connection.
+## This will flood your console with verbose information regarding the websocket connection.
+var debug = false
 
 var lastCursorPositionMemory : Dictionary[String, Vector2] = {} ## Dictionary storing the last position of the cursors in the [Viewport]
 
 var _ws := WebSocketPeer.new()
 
 func _ready() -> void:
+	_connect_websocket()
+
+func _connect_websocket() -> void:
 	if not Engine.is_editor_hint():
 		_ws.connect_to_url("wss://heat.prod.kr/%s" % channel_name)
+
+func _disconnect_websocket() -> void:
+	if _ws.STATE_OPEN:
+		_ws.close(-1)
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "mapping_override" and not simulating_input:
@@ -90,6 +98,18 @@ func _process(delta: float) -> void:
 				release_received.emit(packet)
 				drag_release_received.emit(packet)
 				if simulating_input: _create_release_event(packet)
+
+## Resets the websocket connection going to the GreenHeat server
+func reset_connection() -> void:
+	if debug:
+		print("websocket connection state: %s" % _ws.get_ready_state())
+	match _ws.get_ready_state():
+		1:
+			_disconnect_websocket()
+			await get_tree().create_timer(0.01).timeout
+			_connect_websocket()
+		3:
+			_connect_websocket()
 
 func _create_click_event(packet: Dictionary) -> void:
 	var newInput : InputEventMouseButton = _create_mouse_button(packet)

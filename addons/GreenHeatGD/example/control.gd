@@ -102,3 +102,7 @@ func _input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed == false:
 			$ColorRect.color = "#c20041"
 			# print("released!")
+
+
+func _on_reset_connection_button_pressed() -> void:
+	$GreenHeat.reset_connection()
